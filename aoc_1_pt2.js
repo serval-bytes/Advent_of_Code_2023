@@ -999,7 +999,7 @@ onesevenf78threedzvlm1
 xlkdlhlk23four
 8ninejseven5`;
 
-const input2 = `eightwo`;
+const input2 = `twofive`;
 
 const wordNums = {
     'one': 1,
@@ -1014,49 +1014,53 @@ const wordNums = {
   };
 
 const wordLabels = Object.keys(wordNums);
-const containsWordNum = (word) => {
-    for(wordLabel in wordLabels){
-        if (word.includes(wordLabels[wordLabel]))
-            return wordLabels[wordLabel];
-    }
-    return null; 
-} 
-
 const inputArr = input.split("\n");
-let lastDigit = -1;
-let firstDigit = -1;
 let sum = 0;
-
 const isNumber = (val) => { return !isNaN(+val) && isFinite(+val); }
+
+const findMatchingIndices = (input, mainField) => {
+    var re = new RegExp(input,'gi');
+    var results = new Array();
+    while (re.exec(mainField)) {
+        results.push(re.lastIndex);
+    }
+    return results;
+}
 
 for(let i = 0; i < inputArr.length; i++)
     {
+        let lastDigit = -1;
+        let firstDigit = -1;
+        let rightMostIndex = -1;
+        let leftMostIndex = Number.MAX_SAFE_INTEGER;
         let firstDigitSeen = false;
-        let word = "";
         for(let j = 0; j < inputArr[i].length; j++)
         {   
-            currInputElem = inputArr[i][j];
-            if(isNumber(currInputElem)) {
+            if(isNumber(inputArr[i][j])) {
                 if(!firstDigitSeen) {
+                    leftMostIndex = j;
+                    firstDigit = inputArr[i][j];
                     firstDigitSeen = true;
-                    firstDigit = currInputElem;
                 }
-                lastDigit = currInputElem;
+                rightMostIndex = j;
+                lastDigit = inputArr[i][j];
             }
-            else{
-                word += currInputElem;
-                if(word.length >= 3) { 
-                    const newWord = containsWordNum(word);
-                    if(newWord !== null) {
-                        if(!firstDigitSeen) {
-                            firstDigitSeen = true;
-                            firstDigit = wordNums[newWord];
-                        }
-                        lastDigit = wordNums[newWord];
-                        if(newWord === "eight" && input[i][j+1] != undefined && input[i][j+1] === 'w' )
-                            word = 't';
-                        else word = ""; 
-                    }
+        }
+        for(label in wordLabels) {
+            const word = wordLabels[label];
+            // if(rightMostIndex !== -1)
+            // {
+
+            // }
+            const indices = findMatchingIndices(word, inputArr[i]);
+            if(indices.length > 0) {
+                if(indices[0] - word.length < leftMostIndex) {
+                    leftMostIndex = indices[0] - word.length;
+                    firstDigit = wordNums[word];
+                }
+                if(indices[indices.length - 1] - word.length > rightMostIndex) {
+                    rightMostIndex = indices[indices.length - 1] - word.length;
+                    lastDigit = wordNums[word];
                 }
             }
         }
