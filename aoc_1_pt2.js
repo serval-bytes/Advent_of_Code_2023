@@ -1019,8 +1019,8 @@ let sum = 0;
 const isNumber = (val) => { return !isNaN(+val) && isFinite(+val); }
 
 const findMatchingIndices = (input, mainField) => {
-    var re = new RegExp(input,'gi');
-    var results = new Array();
+    const re = new RegExp(input,'gi');
+    const results = new Array();
     while (re.exec(mainField)) {
         results.push(re.lastIndex);
     }
