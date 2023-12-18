@@ -9,7 +9,6 @@ const input= `467..114..
 ...$.*....
 .664.598..`
 
-
 const isNumber = (val) => { return val !== undefined && !isNaN(+val) && isFinite(+val); }
 let sum = 0;
 
@@ -35,10 +34,28 @@ const checkSurroundingCells = (arr, row, col) => {
     else if(isNumber(arr[row-1][col+1]) && isNumber(arr[row-1][col-1])) {
         adjCells.push([row-1, col+1]);
         adjCells.push([row-1, col-1]);
-        numcells+=2;
+        numCells+=2;
+    }
+    else if(isNumber(arr[row-1][col-1]) && isNumber(arr[row-1][col])) {
+        adjCells.push([row-1, col-1]);
+        adjCells.push([row-1, col]);
+        numCells++;
+    }
+    else if(isNumber(arr[row-1][col+1]) && isNumber(arr[row-1][col])) {
+        adjCells.push([row-1, col+1]);
+        adjCells.push([row-1, col]);
+        numCells++;
+    }
+    else if(isNumber(arr[row-1][col+1])){
+        adjCells.push([row-1, col+1]);
+        numCells++;
+    }
+    else if(isNumber(arr[row-1][col-1])){
+        adjCells.push([row-1, col-1]);
+        numCells++;
     }
     else {
-        adjCells.push([row-1][col]);
+        adjCells.push([row-1, col]);
         numCells++;
     }
     if(isNumber(arr[row+1][col]) && isNumber(arr[row+1][col+1]) && isNumber(arr[row+1][col-1])) {
@@ -50,10 +67,28 @@ const checkSurroundingCells = (arr, row, col) => {
     else if(isNumber(arr[row+1][col+1]) && isNumber(arr[row+1][col-1])) {
         adjCells.push([row+1, col+1]);
         adjCells.push([row+1, col-1]);
-        numcells+=2;
+        numCells+=2;
+    }
+    else if(isNumber(arr[row+1][col-1]) && isNumber(arr[row+1][col])) {
+        adjCells.push([row+1, col-1]);
+        adjCells.push([row+1, col]);
+        numCells++;
+    }
+    else if(isNumber(arr[row+1][col+1]) && isNumber(arr[row+1][col])) {
+        adjCells.push([row+1, col+1]);
+        adjCells.push([row+1, col]);
+        numCells++;
+    }
+    else if(isNumber(arr[row+1][col+1])){
+        adjCells.push([row+1, col+1]);
+        numCells++;
+    }
+    else if(isNumber(arr[row+1][col-1])){
+        adjCells.push([row+1, col-1]);
+        numCells++;
     }
     else {
-        adjCells.push([row+1][col]);
+        adjCells.push([row+1, col]);
         numCells++;
     }
 
@@ -64,9 +99,8 @@ schematicLines = input.split('\n');
 for(let i = 0; i < schematicLines.length; i++) {
     for(let j = 0; j < schematicLines[i].length; j++) {
         if(!isNumber(schematicLines[i][j]) && schematicLines[i][j] != '.') {
-            if(checkSurroundingCells(schematicLines, i, j).num === 2) {
-                console.log(schematicLines[i][j]);
-            }
+            const adjCells = checkSurroundingCells(schematicLines, i, j);
+            console.log(schematicLines[i][j], ": ", adjCells.num, " ", adjCells.numArray);
         }
     }
 }
