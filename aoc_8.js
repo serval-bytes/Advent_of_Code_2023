@@ -763,24 +763,14 @@ let selectedLabel = "AAA";
 let stepCount = 0;
 const nodeObject = {};
 const nodeArr = inputNodes.replace(/\n/g, '=').split('=');
-// console.log(nodeArr);
-
 
 for(let i = 0; i < nodeArr.length-1; i+=2) {
     nodeObject[nodeArr[i].replace(/\W/g, '')] = [ nodeArr[i+1].split(',')[0].replace(/\W/g, ''), nodeArr[i+1].split(',')[1].replace(/\W/g, '') ];
 }
-// console.log(nodeObject);
-// console.log(nodeObject['AAA']);
 while(!solved) {
     stepCount++;
     for(const i in input) {
-        // console.log(nodeObject[selectedLabel]);
-        // console.log(input[i]);
-        // console.log(nodeObject[selectedLabel][0]); //捏回复恶妇备份
-        // console.log(nodeObject[selectedLabel][1]); //捏回复恶妇备份
-        // console.log(input[i] === 'L');
         selectedLabel = input[i] === 'L' ? nodeObject[selectedLabel][0] : nodeObject[selectedLabel][1];
-        // console.log(selectedLabel);
         if(selectedLabel === "ZZZ") { solved = true; break; }
     }
 }
