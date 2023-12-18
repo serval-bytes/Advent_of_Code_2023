@@ -9,7 +9,7 @@ const input= `467..114..
 ...$.*....
 .664.598..`
 
-const isNumber = (val) => { return val !== undefined && !isNaN(+val) && isFinite(+val); }
+const isNumber = (val) => { return val !== undefined && val !== '.' && !isNaN(+val) && isFinite(+val); }
 let sum = 0;
 
 const checkSurroundingCells = (arr, row, col) => {
@@ -54,7 +54,7 @@ const checkSurroundingCells = (arr, row, col) => {
         adjCells.push([row-1, col-1]);
         numCells++;
     }
-    else {
+    else if(isNumber(arr[row-1][col])){
         adjCells.push([row-1, col]);
         numCells++;
     }
@@ -87,7 +87,7 @@ const checkSurroundingCells = (arr, row, col) => {
         adjCells.push([row+1, col-1]);
         numCells++;
     }
-    else {
+    else if(isNumber([row+1][col])){
         adjCells.push([row+1, col]);
         numCells++;
     }
@@ -98,9 +98,38 @@ const checkSurroundingCells = (arr, row, col) => {
 schematicLines = input.split('\n');
 for(let i = 0; i < schematicLines.length; i++) {
     for(let j = 0; j < schematicLines[i].length; j++) {
-        if(!isNumber(schematicLines[i][j]) && schematicLines[i][j] != '.') {
+        if(schematicLines[i][j] === '*') {
             const adjCells = checkSurroundingCells(schematicLines, i, j);
-            console.log(schematicLines[i][j], ": ", adjCells.num, " ", adjCells.numArray);
+            if(adjCells.num === 2) {
+                console.log(schematicLines[i][j], ": ", adjCells.num, " ", adjCells.numArray);
+                for(let i = 0; i < adjCells.numArray.length; i++) {
+                    let cols=adjCells.numArray[i][1];
+                    let startingColRight = cols + 1;
+                    let lookAhead = schematicLines[adjCells.numArray[i][0]][cols];
+                    let leftSideTemp = '';
+                    let rightSideTemp = '';
+                    console.log(i, " ", cols);
+                    if(isNumber(schematicLines[adjCells.numArray[i][0]][cols-1])) {
+                        while(isNumber(lookAhead)) {
+                            leftSideTemp = lookAhead + '' + leftSideTemp;
+                            schematicLines[adjCells.numArray[i][0]][cols] = '.';
+                            cols--;
+                            lookAhead = schematicLines[adjCells.numArray[i][0][cols]];
+                        }
+                    }
+                    if(isNumber(schematicLines[adjCells.numArray[i][0]][startingColRight])) {
+                        lookAhead = schematicLines[adjCells.numArray[i][0]][startingColRight];
+                        while(isNumber(lookAhead)) {
+                            rightSideTemp = rightSideTemp + '' + lookAhead;
+                            schematicLines[adjCells.numArray[i][0]][startingColRight] = '.';
+                            startingColRight++;
+                            lookAhead = schematicLines[adjCells.numArray[i][0][startingColRight]];
+                        }
+                    }
+
+                    // sum+=
+                }
+            }
         }
     }
 }
