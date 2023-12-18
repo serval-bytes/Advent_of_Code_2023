@@ -1048,10 +1048,6 @@ for(let i = 0; i < inputArr.length; i++)
         }
         for(label in wordLabels) {
             const word = wordLabels[label];
-            // if(rightMostIndex !== -1)
-            // {
-
-            // }
             const indices = findMatchingIndices(word, inputArr[i]);
             if(indices.length > 0) {
                 if(indices[0] - word.length < leftMostIndex) {
